@@ -69,7 +69,7 @@ function processEpisode(episode){
   item_html += "<p> Date: " + formatDate(episode.start,episode.end) + "</p>";
   item_html += "<p> Duration: " + episode.duration/60 + " minutes</p>";
   if(episode.programme.position){
-    item_html += '<a href="#" onclick="getUpcomingEpisodies(\'' + episode.programme.programme.pid + '\')">View upcoming Episodies</a>';
+    item_html += '<a href="#" onclick="getUpcomingEpisodies(\'' + episode.programme.programme.pid + '\')">View all upcoming ' + episode.programme.display_titles.title+ '</a>';
   }
   item_html += '<span class="service">' + episode.service.title + '</span>'
   item_html += "</li>";
