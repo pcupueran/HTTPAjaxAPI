@@ -25,7 +25,7 @@ function retrieveGenres(){
       showGenres(data.categories);
    
   }).fail(function(xhr,status, error){
-     alert("Error: "+xhr.status+": "+xhr.statusText);
+      alert("Error: "+xhr.status+": "+xhr.statusText);
   });
 }
 
@@ -45,15 +45,12 @@ function getTomorrowSchedule(genre){
   }).done(function(data){
       showFilms(data.broadcasts);
   }).fail(function(xhr,status, error){
-     alert("Error: "+xhr.status+": "+xhr.statusText);
+      alert("Error: "+xhr.status+": "+xhr.statusText);
   });
   
 }
 
 function showFilms(broadcasts){
-  /*if($("#programmes li").length != 0){
-    $("#programmes").html("");
-  }*/
   $.each(broadcasts, function( index, value ) {
     $("#programmes").append(processEpisode(value));
   });
@@ -74,6 +71,7 @@ function processEpisode(episode){
   if(episode.programme.position){
     item_html += '<a href="#" onclick="getUpcomingEpisodies(\'' + episode.programme.programme.pid + '\')">View upcoming Episodies</a>';
   }
+  item_html += '<span class="service">' + episode.service.title + '</span>'
   item_html += "</li>";
   return item_html;
 }
@@ -86,10 +84,9 @@ function getUpcomingEpisodies(pid){
       $("#programmes").empty();
     }
   }).done(function(data){
-    //console.log(data);
-    showFilms(data.broadcasts);
+      showFilms(data.broadcasts);
   }).fail(function(xhr,status, error){
-    alert("Error: " + xhr.status + " " + xhr.statusText);
+      alert("Error: " + xhr.status + " " + xhr.statusText);
   });
 }
 
