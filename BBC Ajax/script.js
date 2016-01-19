@@ -1,62 +1,57 @@
 // TV Schedule example
-$(document).ready(function()
-{
+$(document).ready(function() {
   retrieveGenres();
-  $(document).on('click', "#genres li", function(){
+  $(document).on('click', "#genres li", function() {
     var genre = $(this);
-    if($(".active").length != 0){
+    if( $(".active").length !== 0 ) {
       $(".active").removeClass("active");
     }
     getTomorrowSchedule(genre.attr('id'));
     genre.addClass("active");
   });
+});
 
-}); 
-
-
-function retrieveGenres(){
+function retrieveGenres() {
   $.ajax({
     url:"http://www.bbc.co.uk/tv/programmes/genres.json",
     dataType: 'json',
-    beforeSend: function(){
-      
+    beforeSend: function() {
+
     }
-  }).done(function(data){
+  }).done(function(data) {
       showGenres(data.categories);
-   
-  }).fail(function(xhr,status, error){
-      alert("Error: "+xhr.status+": "+xhr.statusText);
+  }).fail(function(xhr,status, error) {
+      alert("Error: " + xhr.status+": " + xhr.statusText);
   });
 }
 
-function showGenres(categories){
+function showGenres(categories) {
   $.each(categories, function( index, value ) {
       $("#genres").append("<li id=" + value.key + "> " + value.title + " </li>");
     });
-  
-}
-function getTomorrowSchedule(genre){
-  $.ajax({
-    url:"http://www.bbc.co.uk/tv/programmes/genres/" + genre +"/schedules/tomorrow.json",
-    dataType: 'json',
-    beforeSend: function(){
-      $("#programmes").empty();
-    }
-  }).done(function(data){
-      showFilms(data.broadcasts);
-  }).fail(function(xhr,status, error){
-      alert("Error: "+xhr.status+": "+xhr.statusText);
-  });
-  
 }
 
-function showFilms(broadcasts){
+function getTomorrowSchedule(genre) {
+  $.ajax({
+    url:"http://www.bbc.co.uk/tv/programmes/genres/" + genre + "/schedules/tomorrow.json",
+    dataType: 'json',
+    beforeSend: function() {
+      $("#programmes").empty();
+    }
+  }).done(function(data) {
+    showFilms(data.broadcasts);
+  }).fail(function(xhr,status, error) {
+    alert("Error: "+xhr.status+": "+xhr.statusText);
+  });
+}
+
+function showFilms(broadcasts) {
   $.each(broadcasts, function( index, value ) {
     $("#programmes").append(processEpisode(value));
   });
 }
 
-function processEpisode(episode){
+function processEpisode(episode) {
   item_html =  "<li>";
   item_html += "<h2>" + episode.programme.display_titles.title + "</h2>";
   item_html += "<h4>" + episode.programme.short_synopsis + "</h4>";
@@ -68,25 +63,25 @@ function processEpisode(episode){
   }
   item_html += "<p> Date: " + formatDate(episode.start,episode.end) + "</p>";
   item_html += "<p> Duration: " + episode.duration/60 + " minutes</p>";
-  if(episode.programme.position){
-    item_html += '<a href="#" onclick="getUpcomingEpisodies(\'' + episode.programme.programme.pid + '\')">View all upcoming ' + episode.programme.display_titles.title+ '</a>';
+  if(episode.programme.position) {
+    item_html += '<a href="#" onclick="getUpcomingEpisodies(\'' + episode.programme.programme.pid + '\')">View all upcoming ' + episode.programme.display_titles.title + '</a>';
   }
-  item_html += '<span class="service">' + episode.service.title + '</span>'
+  item_html += '<span class="service">' + episode.service.title + '</span>';
   item_html += "</li>";
   return item_html;
 }
 
-function getUpcomingEpisodies(pid){
+function getUpcomingEpisodies(pid) {
   $.ajax({
     url:"http://www.bbc.co.uk/programmes/" + pid + "/episodes/upcoming.json",
     dataType: 'json',
-    beforeSend: function(){
+    beforeSend: function() {
       $("#programmes").empty();
     }
-  }).done(function(data){
-      showFilms(data.broadcasts);
+  }).done(function(data) {
+    showFilms(data.broadcasts);
   }).fail(function(xhr,status, error){
-      alert("Error: " + xhr.status + " " + xhr.statusText);
+    alert("Error: " + xhr.status + " " + xhr.statusText);
   });
 }
 
@@ -105,9 +100,9 @@ function formatDate(start, end) {
   end_mins = end_date.getMinutes();
 
   date = day + "/" + month + "/" + year + " ";
-  
+
   // add leading 0 and return last two characters to make sure we use 00:00 format
-  date +=  ("0"+start_hour).slice(-2) + ":" + ("0"+start_mins).slice(-2) + " - " +
-           ('0' + end_hour).slice(-2) + ":" +  ( "0" + end_mins).slice(-2); 
+  date +=  ("0" + start_hour).slice(-2) + ":" + ("0" + start_mins).slice(-2) + " - " +
+           ('0' + end_hour).slice(-2) + ":" +  ( "0" + end_mins).slice(-2);
   return date;
 }
