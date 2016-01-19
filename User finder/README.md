@@ -1,3 +1,2 @@
-HTTPAjaxAPI
-===========
-- Send AJAX HTTP requests using Jquery
+- Sending HTTPRequest to GET information from the github API using github usernames.
+- Use of XHR (XMLHttpRequest API) to send http request to the server and load its response data.

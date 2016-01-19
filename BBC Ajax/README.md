@@ -1,2 +1,3 @@
-- Sending HTTPRequest to GET information from the github API using github usernames.
-- Use of XHR (XMLHttpRequest API) to send http request to the server and load its response data.
+HTTPAjaxAPI
+===========
+- Send AJAX HTTP requests to BBC API to retrieve upcoming TV episodies using Jquery
